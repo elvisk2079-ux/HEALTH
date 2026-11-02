@@ -1,0 +1,292 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aches & Pains</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,600;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#fbf6ee;--paper:#fffdf9;--ink:#2f3a33;--muted:#6f7a72;--line:#e7ddcf;
+  --green:#5d8f4c;--green-bg:#eaf3e2;--blue:#4b78a8;--blue-bg:#e5effa;
+  --purple:#7d5aa8;--purple-bg:#f1eaf8;--rose:#b4566a;--rose-bg:#fbe9ec;
+  --ok:#3f9a5a;--ok-bg:#e3f4e6;--bad:#cf5b5b;--bad-bg:#fbe5e3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Nunito",system-ui,sans-serif;min-height:100vh}
+.decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.decor svg{position:absolute;opacity:.6}
+main{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:28px 16px 60px}
+header{text-align:center;margin-bottom:18px}
+.kicker{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:var(--green-bg);padding:4px 14px;border-radius:99px}
+h1{font:italic 700 clamp(34px,6vw,52px)/1.1 "Lora",Georgia,serif;margin:12px 0 6px;color:#2c4a32}
+.sub{margin:0;color:var(--muted)}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 26px}
+nav a{font-size:14px;font-weight:700;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:6px 12px;border-radius:99px}
+nav a:hover{border-color:var(--green)}
+.ex{--c:var(--green);--cb:var(--green-bg);background:var(--paper);border:2px solid var(--cb);border-radius:22px;padding:20px 20px 22px;margin:0 0 26px;box-shadow:0 6px 20px rgba(80,60,30,.06);scroll-margin-top:12px}
+.c-blue{--c:var(--blue);--cb:var(--blue-bg)}.c-purple{--c:var(--purple);--cb:var(--purple-bg)}.c-rose{--c:var(--rose);--cb:var(--rose-bg)}
+.ex-head{display:flex;align-items:center;gap:12px;margin:-4px 0 6px}
+.num{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--cb);color:var(--c);font:italic 700 20px "Lora",serif}
+h2{margin:0;font:italic 700 26px/1.2 "Lora",Georgia,serif;color:var(--c)}
+.instr{margin:0 0 14px;color:var(--muted)}
+.instr b{color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.btn{font:inherit;font-size:15px;font-weight:700;cursor:pointer;border:1.5px solid var(--cb);background:var(--paper);color:var(--c);padding:7px 14px;border-radius:12px}
+.btn:hover{background:var(--cb)}
+.btn.main{background:var(--c);border-color:var(--c);color:#fff}
+.btn.main:hover{filter:brightness(1.08)}
+.result{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;padding:12px 16px;border-radius:14px;background:var(--cb);font-weight:800;font-size:18px;animation:pop .35s}
+@keyframes pop{from{transform:scale(.96);opacity:0}}
+/* flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.fc{position:relative;min-height:118px;cursor:pointer;perspective:700px}
+.fc .face{position:absolute;inset:0;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;backface-visibility:hidden;transition:transform .45s;border:1.5px solid var(--cb)}
+.fc .front{background:var(--paper)}
+.fc .back{background:var(--cb);transform:rotateY(180deg)}
+.fc.flip .front{transform:rotateY(-180deg)}.fc.flip .back{transform:rotateY(0)}
+.fc b{font-size:18px;line-height:1.25}.fc i{font-style:normal;font-size:13px;color:var(--muted);margin-top:3px}
+.fc .ex-s{font-style:italic;font-size:13px;color:var(--c);margin-top:5px}
+.fc .emo{font-size:26px;line-height:1;margin-bottom:4px}
+/* mcq */
+.q{padding:12px 0;border-top:1px dashed var(--line)}
+.q:first-child{border-top:0}
+.qt{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.qt em{font-style:normal;font-weight:800;color:var(--c)}
+.pic{font-size:30px;line-height:1}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:16px;cursor:pointer;border:1.5px solid var(--line);background:#fff;padding:7px 14px;border-radius:12px;color:var(--ink)}
+.opt:hover{border-color:var(--c)}
+.opt.ok{background:var(--ok-bg);border-color:var(--ok);color:#1f5e33;font-weight:700}
+.opt.bad{background:var(--bad-bg);border-color:var(--bad);color:#8f2f2f;text-decoration:line-through}
+.chat .qt span:last-child{background:var(--cb);padding:8px 14px;border-radius:4px 16px 16px 16px}
+.chat .opts{justify-content:flex-end}
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col{display:flex;flex-direction:column;gap:8px}
+.tile{font:inherit;font-size:16px;cursor:pointer;text-align:left;border:1.5px solid var(--line);background:#fff;padding:10px 14px;border-radius:12px;color:var(--ink);transition:.2s}
+.tile:hover{border-color:var(--c)}
+.tile.sel{border-color:var(--c);background:var(--cb);transform:scale(1.02)}
+.tile.ok{background:var(--ok-bg);border-color:var(--ok);opacity:.65;cursor:default}
+.tile.bad{background:var(--bad-bg);border-color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* gaps & label */
+.bank{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border-radius:14px;background:var(--cb);margin-bottom:14px}
+.bank span{background:#fff;border-radius:8px;padding:2px 10px;font-weight:700;font-size:15px;color:var(--c)}
+.text{line-height:2.3;font-size:17px}
+select,.spell input{font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:10px;padding:3px 6px;background:#fff;color:var(--ink)}
+select.ok,input.ok{border-color:var(--ok);background:var(--ok-bg)}
+select.bad,input.bad{border-color:var(--bad);background:var(--bad-bg)}
+.fix{display:inline-block;margin-left:6px;font-size:14px;font-weight:800;color:var(--ok)}
+.fix::before{content:"→ "}
+.label{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:center}
+.fig svg{width:100%;height:auto;display:block}
+.labs{margin:0;padding-left:30px;display:grid;gap:7px}
+.labs li{font-weight:800;color:var(--c)}
+.labs li::marker{font-weight:800}
+.mk{fill:#fff;stroke:var(--c);stroke-width:2}.mt{font:800 13px Nunito,sans-serif;fill:var(--c);text-anchor:middle}
+.ld{stroke:var(--c);stroke-width:1.2;opacity:.55}.dot{fill:var(--c)}
+/* order */
+.orow{padding:12px 0;border-top:1px dashed var(--line);display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
+.orow:first-child{border-top:0}
+.orow em{font-style:normal;font-weight:800;color:var(--c)}
+.answ{display:flex;align-items:center;gap:4px}
+.ans{flex:1;min-height:44px;display:flex;flex-wrap:wrap;gap:6px;padding:6px;border:1.5px dashed var(--cb);border-radius:12px;background:#fff}
+.ans.ok{border:1.5px solid var(--ok);background:var(--ok-bg)}
+.ans.bad{border:1.5px solid var(--bad);background:var(--bad-bg)}
+.end{font-weight:800;font-size:20px}
+.pool{grid-column:2;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:16px;cursor:pointer;border:1.5px solid var(--cb);background:var(--cb);color:var(--ink);padding:5px 11px;border-radius:10px}
+.ans .chip{background:#fff;border-color:var(--c)}
+.ofix{grid-column:2;font-size:14px;font-weight:800;color:var(--ok)}
+/* spell */
+.spell{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.spell label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--cb);padding:8px 10px;border-radius:12px}
+.spell span{flex:1 1 100px;font-weight:700}
+.spell input{width:130px}
+/* reading */
+.read{background:var(--cb);border-radius:16px;padding:14px 18px;margin-bottom:12px;line-height:1.7}
+.read p{margin:.4em 0}
+footer{text-align:center;color:var(--muted);font-size:14px;margin-top:34px}
+@media (max-width:680px){
+  body{font-size:16px}
+  .decor svg{opacity:.25}
+  .ex{padding:16px 14px 18px}
+  h2{font-size:22px}
+  .label{grid-template-columns:1fr}
+  .match{gap:8px}.tile{font-size:15px;padding:9px 10px}
+}
+.spk{border:0;background:none;cursor:pointer;font-size:18px;padding:2px 4px;border-radius:8px;line-height:1}
+.spk:hover{background:var(--cb)}
+.spk.corner{position:absolute;top:4px;right:4px;font-size:16px}
+.qt .spk{margin-left:auto}
+.fc{min-height:168px}
+.fc .img{width:84px;height:84px;margin-bottom:4px}
+.fc .img svg{width:100%;height:100%;display:block;border-radius:50%;background:#fbf3e6}
+.hl{fill:rgba(230,90,90,.28);stroke:#e05a5a;stroke-width:2.5;animation:pulse 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{50%{transform:scale(1.18)}}
+</style></head><body><script>window.LESSON={kicker:'Health · Vocabulary 2',title:'Aches & Pains',sub:'-ache, hurt, pain, sore — 8 games',sections:[
+{type:'flash',title:'Flashcards',instr:'Click a card to turn it over. Read the example aloud.',cards:[
+ {emo:'🤕',en:'a headache',ex:'I’ve got a headache.',ru:'головная боль'},
+ {emo:'🦷',en:'a toothache',ex:'He has a toothache.',ru:'зубная боль'},
+ {emo:'👂',en:'an earache',ex:'My son has an earache.',ru:'боль в ухе'},
+ {emo:'🤢',en:'a stomachache / tummy ache',ex:'She’s got a tummy ache.',ru:'боль в животе'},
+ {emo:'🧍',en:'a backache',ex:'I have a backache after the flight.',ru:'боль в спине'},
+ {emo:'😣',en:'My … hurts. / My … hurt.',ex:'My head hurts. My feet hurt.',ru:'У меня болит …'},
+ {emo:'📍',en:'I have a pain in my …',ex:'I have a pain in my back.',ru:'У меня боль в …'},
+ {emo:'🗣️',en:'a sore throat',ex:'I’ve got a sore throat.',ru:'больное горло'},
+ {emo:'👁️',en:'sore eyes',ex:'I have sore eyes.',ru:'глаза болят / воспалены'},
+ {emo:'⚡',en:'It’s painful.',ex:'My knee is very painful.',ru:'Это больно.'},
+ {emo:'😖',en:'It hurts when I …',ex:'It hurts when I swallow / walk / cough.',ru:'Больно, когда я … (глотаю / хожу / кашляю)'}]},
+{type:'mcq',title:'What’s wrong?',instr:'Read the situation. What’s the problem?',items:[
+ {pic:'😴',q:'Anna slept only three hours. Now her head hurts. She’s got …',opts:['a headache','a toothache','a backache']},
+ {pic:'🍦',q:'Tom ate three ice creams. Now his tummy hurts. He’s got …',opts:['a stomachache','an earache','sore eyes']},
+ {pic:'📦',q:'Dad carried a heavy box. Now his back hurts. He’s got …',opts:['a backache','a headache','a sore throat']},
+ {pic:'🏊',q:'Sam swam in cold water. Now his ear hurts. He’s got …',opts:['an earache','a toothache','a stomachache']},
+ {pic:'🍭',q:'Lily eats a lot of sweets. Now her tooth hurts. She’s got …',opts:['a toothache','a backache','an earache']},
+ {pic:'🥶',q:'Max drank cold juice. It hurts when he swallows. He’s got …',opts:['a sore throat','sore eyes','a headache']},
+ {pic:'📱',q:'Grandma watched videos on her phone all evening. Her eyes are red. She’s got …',opts:['sore eyes','a sore throat','a toothache']},
+ {pic:'👟',q:'Kate walked for five hours in new shoes. Her feet hurt. Walking is …',opts:['painful','a headache','sore eyes']}]},
+{type:'match',title:'Say it another way',instr:'Match two sentences with the same meaning.',pairs:[
+ ['My head hurts.','I’ve got a headache.'],['My tooth hurts.','I’ve got a toothache.'],['My ear hurts.','I’ve got an earache.'],
+ ['My tummy hurts.','I’ve got a stomachache.'],['My back hurts.','I’ve got a backache.'],['My throat hurts.','I’ve got a sore throat.'],['My eyes hurt.','I’ve got sore eyes.']]},
+{type:'mcq',title:'hurt or hurts?',instr:'<b>one</b> → hurt<b>s</b> (My head hurts). <b>many</b> → hurt (My feet hurt).',keepOpts:true,items:[
+ {q:'My head ___ .',opts:['hurt','hurts'],a:1},{q:'My feet ___ .',opts:['hurt','hurts'],a:0},{q:'My eyes ___ .',opts:['hurt','hurts'],a:0},
+ {q:'My back ___ .',opts:['hurt','hurts'],a:1},{q:'My teeth ___ .',opts:['hurt','hurts'],a:0},{q:'My son’s ear ___ .',opts:['hurt','hurts'],a:1},
+ {q:'My knees ___ after running.',opts:['hurt','hurts'],a:0},{q:'It ___ when I swallow.',opts:['hurt','hurts'],a:1},
+ {q:'Does your arm ___ ?',opts:['hurt','hurts'],a:0},{q:'Where does it ___ ?',opts:['hurt','hurts'],a:0}]},
+{type:'mcq',title:'a, an or — ?',instr:'Choose <b>a</b>, <b>an</b> or <b>—</b> (no word).',keepOpts:true,items:[
+ {q:'I’ve got ___ headache.',opts:['a','an','—'],a:0},{q:'My son has ___ earache.',opts:['a','an','—'],a:1},
+ {q:'She has ___ sore throat.',opts:['a','an','—'],a:0},{q:'I have ___ sore eyes.',opts:['a','an','—'],a:2},
+ {q:'He’s got ___ toothache.',opts:['a','an','—'],a:0},{q:'I have ___ pain in my back.',opts:['a','an','—'],a:0},
+ {q:'My feet ___ hurt.',opts:['a','an','—'],a:2}]},
+{type:'order',title:'Build the sentence',instr:'Click the words in the right order. Click a word again to move it back.',take:6,items:[
+ 'I have a pain in my back.','It hurts when I swallow.','My son has an earache.','She’s got a tummy ache.','It hurts when I walk.','I’ve got a sore throat.','Do your eyes hurt?','My feet hurt after the walk.']},
+{type:'mcq',title:'At the doctor’s',instr:'You are the patient. Choose the best answer.',style:'chat',keepItems:true,items:[
+ {pic:'👩‍⚕️',q:'Hello! What’s the problem?',opts:['I’ve got a terrible headache.','I’m fine, thank you.','Yes, it is.']},
+ {pic:'👩‍⚕️',q:'Does anything else hurt?',opts:['Yes, my throat is sore too.','Yes, I have a doctor.','No, I’m a teacher.']},
+ {pic:'👩‍⚕️',q:'Does it hurt when you swallow?',opts:['Yes, it’s very painful.','Yes, I swallow.','It’s Monday.']},
+ {pic:'👩‍⚕️',q:'Do your ears hurt?',opts:['No, they don’t.','No, it doesn’t.','No, I don’t.']},
+ {pic:'👩‍⚕️',q:'And your eyes?',opts:['They’re a little sore.','It’s a little sore.','I have two eyes.']},
+ {pic:'👩‍⚕️',q:'OK. Drink warm tea and rest at home.',opts:['Thank you, doctor!','You’re welcome!','Me too!']}]},
+{type:'mcq',title:'Read: A Bad Monday',instr:'Read the text. True or False?',keepOpts:true,keepItems:true,
+ pre:'<p>On Monday morning Lisa felt terrible. She had a headache and a sore throat. “It hurts when I swallow,” she said to her husband.</p><p>Her son Max had a problem too — he had an earache. Lisa’s husband was OK, but his back hurt, because he played tennis on Sunday. “Our home is a hospital!” laughed Lisa.</p><p>She made hot tea with lemon and honey for everyone. In the evening Max’s ear didn’t hurt any more, but Lisa still had a sore throat.</p>',
+ items:[{q:'Lisa had a headache on Monday.',opts:['True','False'],a:0},{q:'Lisa had sore eyes.',opts:['True','False'],a:1},
+ {q:'It hurt when Lisa swallowed.',opts:['True','False'],a:0},{q:'Max had a toothache.',opts:['True','False'],a:1},
+ {q:'Her husband had a backache after tennis.',opts:['True','False'],a:0},{q:'In the evening Max still had an earache.',opts:['True','False'],a:1},
+ {q:'In the evening Lisa’s throat was still sore.',opts:['True','False'],a:0}]}
+]};
+</script><script>(function(){
+const L=window.LESSON;
+const $=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,v]of Object.entries(a)){if(x==='class')e.className=v;else if(x==='html')e.innerHTML=v;else if(x.startsWith('on'))e.addEventListener(x.slice(2),v);else e.setAttribute(x,v);}k.flat().forEach(c=>c!=null&&e.append(c));return e;};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const norm=s=>s.toLowerCase().replace(/[’`]/g,"'").replace(/\s+/g,' ').trim();
+let VOICE=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
+ VOICE=vs.find(v=>/en[-_]GB/i.test(v.lang)&&/google|natural|online|serena|daniel|kate/i.test(v.name))||vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/en[-_]US/i.test(v.lang))||vs[0]||null;}catch(e){VOICE=null;}}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
+function speak(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/[—\/…]/g,', ').replace(/___/g,'blank'));if(VOICE)u.voice=VOICE;u.lang=VOICE?VOICE.lang:'en-GB';u.rate=.9;speechSynthesis.speak(u);}catch(e){}}
+const HAS_TTS='speechSynthesis' in window;
+const sp=(t,cls='spk')=>HAS_TTS?$('button',{class:cls,title:'Listen','aria-label':'Listen',onclick(e){e.stopPropagation();speak(typeof t==='function'?t():t);}},'🔊'):null;
+const COLORS=['green','blue','purple','rose'];
+const score=(ok,t)=>`${ok} / ${t} — ${ok===t?'🎉 Excellent!':ok>=t*.7?'👍 Good job!':'💪 Try again!'}`;
+function result(body,text,render){body.querySelector(':scope > .result')?.remove();body.append($('div',{class:'result'},$('span',{},text),$('button',{class:'btn',onclick:render},'↻ Again')));}
+function grade(els){let ok=0;els.forEach(el=>{const n=el.nextElementSibling;if(n&&n.classList.contains('fix'))n.remove();const ans=el.dataset.a.split('|');const g=ans.some(a=>norm(a)===norm(el.value));el.classList.toggle('ok',g);el.classList.toggle('bad',!g);if(g)ok++;else el.after($('span',{class:'fix'},ans[0]));});return[ok,els.length];}
+function checker(body,fn,render){return $('div',{class:'bar'},$('button',{class:'btn main',onclick(){const[ok,t]=fn();result(body,score(ok,t),render);}},'✓ Check'));}
+const sel=(words,a)=>{const s=$('select',{},$('option',{value:''},'…'),...words.map(w=>$('option',{value:w},w)));s.dataset.a=a;return s;};
+
+const R={
+flash(s,body){
+  let back=false,cards=s.cards.slice();const grid=$('div',{class:'cards'});
+  const draw=()=>{grid.innerHTML='';cards.forEach(c=>{const f=$('div',{class:'fc'+(back?' flip':''),onclick(){f.classList.toggle('flip');}},
+    $('div',{class:'face front'},sp(c.say||(c.en+(c.ex?'. '+c.ex:'')),'spk corner'),c.img?$('div',{class:'img',html:c.img}):c.emo?$('div',{class:'emo'},c.emo):null,$('b',{},c.en),c.tr?$('i',{},c.tr):null,c.ex?$('div',{class:'ex-s'},c.ex):null),
+    $('div',{class:'face back'},$('b',{},c.ru)));grid.append(f);});};
+  body.append($('div',{class:'bar'},
+    $('button',{class:'btn',onclick(){cards=shuffle(cards);draw();}},'🔀 Shuffle'),
+    $('button',{class:'btn',onclick(){back=!back;draw();}},'🔁 RU ↔ EN'),
+    $('button',{class:'btn',onclick(){cards=s.cards.slice();back=false;draw();}},'↺ Reset')),grid);draw();
+},
+mcq(s,body,render){
+  let ok=0,done=0;const items=s.keepItems?s.items:shuffle(s.items);const list=$('div',{class:'mcq '+(s.style||'')});
+  items.forEach((it,k)=>{
+    const ans=it.opts[it.a||0];const opts=s.keepOpts?it.opts:shuffle(it.opts);
+    const row=$('div',{class:'q'},$('div',{class:'qt'},it.pic?$('span',{class:'pic'},it.pic):null,$('span',{html:`<em>${k+1}.</em> ${it.q}`}),s.style==='chat'?sp(it.q):null));
+    const ob=$('div',{class:'opts'});
+    opts.forEach(o=>{const b=$('button',{class:'opt',onclick(){if(row.dataset.d)return;row.dataset.d=1;done++;
+      if(o===ans){b.classList.add('ok');ok++;}else{b.classList.add('bad');[...ob.children].find(x=>x.textContent===ans).classList.add('ok');}
+      if(done===items.length)result(body,score(ok,items.length),render);}},o);ob.append(b);});
+    row.append(ob);list.append(row);});
+  body.append(list);
+},
+match(s,body,render){
+  const pairs=shuffle(s.pairs).slice(0,s.take||s.pairs.length);let cur=null,left=pairs.length,miss=0;
+  const A=$('div',{class:'col'}),B=$('div',{class:'col'});
+  const mk=(txt,id,side)=>{const b=$('button',{class:'tile',onclick(){
+    if(b.disabled)return;if(side==='A'&&s.speakA!==false)speak(txt);
+    if(!cur||cur.side===side){if(cur)cur.b.classList.remove('sel');cur={b,id,side};b.classList.add('sel');return;}
+    const p=cur.b;cur=null;
+    if(p.dataset.id===String(id)){[p,b].forEach(x=>{x.classList.remove('sel');x.classList.add('ok');x.disabled=true;});
+      if(--left===0)result(body,miss===0?'🎉 Perfect! No mistakes.':`✅ All matched! Mistakes: ${miss}`,render);}
+    else{miss++;[p,b].forEach(x=>{x.classList.add('bad');setTimeout(()=>x.classList.remove('bad','sel'),450);});}
+  }},txt);b.dataset.id=id;return b;};
+  shuffle(pairs.map((p,i)=>[p[0],i])).forEach(([t,i])=>A.append(mk(t,i,'A')));
+  shuffle(pairs.map((p,i)=>[p[1],i])).forEach(([t,i])=>B.append(mk(t,i,'B')));
+  body.append($('div',{class:'match'},A,B));
+},
+gaps(s,body,render){
+  const words=[...s.bank].sort();body.append($('div',{class:'bank'},...shuffle(s.bank).map(w=>$('span',{},w))));
+  const p=$('div',{class:'text'}),sels=[];
+  s.text.split(/(\{[^}]+\})/).forEach(part=>{const m=part.match(/^\{(.+)\}$/);
+    if(m){const x=sel(words,m[1]);sels.push(x);p.append(x);}else p.append(document.createRange().createContextualFragment(part));});
+  body.append(p,checker(body,()=>grade(sels),render));
+},
+label(s,body,render){
+  const words=s.items.slice().sort(),sels=[];const list=$('ol',{class:'labs'});
+  s.items.forEach(a=>{const x=sel(words,a);sels.push(x);list.append($('li',{},x));});
+  body.append($('div',{class:'label'},$('div',{class:'fig',html:s.svg}),list),checker(body,()=>grade(sels),render));
+},
+order(s,body,render){
+  const rows=[],box=$('div',{class:'order'});
+  shuffle(s.items).slice(0,s.take||99).forEach((sent,k)=>{
+    const end=(sent.match(/[.?!]$/)||[''])[0],core=sent.replace(/[.?!]$/,''),words=core.split(' ');
+    let toks=shuffle(words);for(let n=0;n<5&&toks.join(' ')===core;n++)toks=shuffle(words);
+    const ans=$('div',{class:'ans'}),pool=$('div',{class:'pool'});
+    toks.forEach(w=>{const c=$('button',{class:'chip',onclick(){(c.parentNode===pool?ans:pool).append(c);}},w);pool.append(c);});
+    const fix=$('div',{class:'ofix'});
+    rows.push({ans,core,fix,sent});box.append($('div',{class:'orow'},$('em',{},(k+1)+'.'),$('div',{class:'answ'},ans,$('span',{class:'end'},end)),pool,fix));
+  });
+  body.append(box,checker(body,()=>{let ok=0;rows.forEach(r=>{const got=[...r.ans.children].map(c=>c.textContent).join(' ');const g=norm(got)===norm(r.core);
+    r.ans.classList.toggle('ok',g);r.ans.classList.toggle('bad',!g);r.fix.textContent=g?'':'→ '+r.sent;if(g&&!r.said){r.said=1;}if(g)ok++;});return[ok,rows.length];},render));
+},
+spell(s,body,render){
+  const ins=[],g=$('div',{class:'spell'});
+  shuffle(s.items).slice(0,s.take||10).forEach(([ru,en])=>{const i=$('input',{type:'text',autocomplete:'off',autocapitalize:'off',spellcheck:'false'});i.dataset.a=en;ins.push(i);g.append($('label',{},$('span',{},ru),i));});
+  body.append(g,checker(body,()=>grade(ins),render));
+}};
+
+function section(s,i){
+  const box=$('section',{class:'ex c-'+(s.color||COLORS[i%4]),id:'ex'+(i+1)});
+  const body=$('div',{class:'ex-body'});
+  box.append(...[$('div',{class:'ex-head'},$('span',{class:'num'},String(i+1)),$('h2',{},s.title)),s.instr?$('p',{class:'instr',html:s.instr}):null,s.pre?$('div',{class:'read'},HAS_TTS?$('div',{class:'bar'},$('button',{class:'btn',onclick(){speak(box.querySelector('.read').innerText.replace('🔊 Listen',''));}},'🔊 Listen'),$('button',{class:'btn',onclick(){speechSynthesis.cancel();}},'⏹ Stop')):null,$('div',{html:s.pre})):null,body].filter(Boolean));
+  const render=()=>{body.innerHTML='';R[s.type](s,body,render);};render();return box;
+}
+
+const IC={
+capsule:'<svg width="70" viewBox="0 0 70 28"><rect x="2" y="2" width="66" height="24" rx="12" fill="#fffaf2" stroke="#d98c8c" stroke-width="2"/><path d="M35 2h21a12 12 0 0 1 0 24H35z" fill="#f2a7a2"/></svg>',
+capsule2:'<svg width="60" viewBox="0 0 70 28"><rect x="2" y="2" width="66" height="24" rx="12" fill="#fffaf2" stroke="#e0b65a" stroke-width="2"/><path d="M35 2h21a12 12 0 0 1 0 24H35z" fill="#f4d27a"/></svg>',
+tablet:'<svg width="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="#fff" stroke="#c9b8a6" stroke-width="2"/><path d="M8 22h28" stroke="#c9b8a6" stroke-width="2"/></svg>',
+thermo:'<svg width="34" viewBox="0 0 34 120"><rect x="9" y="4" width="16" height="92" rx="8" fill="#fff" stroke="#9db7d0" stroke-width="2"/><rect x="14" y="40" width="6" height="60" rx="3" fill="#e46a6a"/><circle cx="17" cy="102" r="12" fill="#e46a6a"/><path d="M25 20h4M25 32h4M25 44h4M25 56h4M25 68h4" stroke="#9db7d0" stroke-width="2"/></svg>',
+plaster:'<svg width="96" viewBox="0 0 96 34"><rect x="2" y="2" width="92" height="30" rx="15" fill="#f3d2b0" stroke="#d8ad85" stroke-width="2"/><rect x="34" y="6" width="28" height="22" rx="4" fill="#fbe8d4"/><g fill="#d8ad85"><circle cx="16" cy="12" r="1.6"/><circle cx="22" cy="20" r="1.6"/><circle cx="74" cy="12" r="1.6"/><circle cx="80" cy="20" r="1.6"/></g></svg>',
+heart:'<svg width="40" viewBox="0 0 40 36"><path d="M20 34S2 23 2 11A9 9 0 0 1 20 7a9 9 0 0 1 18 4c0 12-18 23-18 23z" fill="#f08a8a"/><path d="M8 16h7l3-5 4 10 3-5h7" stroke="#fff" stroke-width="2.4" fill="none" stroke-linejoin="round"/></svg>',
+cross:'<svg width="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#e3f0dc"/><path d="M20 10v20M10 20h20" stroke="#6aa056" stroke-width="7" stroke-linecap="round"/></svg>',
+drop:'<svg width="26" viewBox="0 0 26 36"><path d="M13 2C13 2 2 16 2 23a11 11 0 0 0 22 0C24 16 13 2 13 2z" fill="#a9cdee"/></svg>',
+bottle:'<svg width="44" viewBox="0 0 44 64"><rect x="10" y="2" width="24" height="10" rx="3" fill="#fff" stroke="#c9b8a6" stroke-width="2"/><rect x="4" y="12" width="36" height="50" rx="8" fill="#d99a5b"/><rect x="9" y="26" width="26" height="22" rx="3" fill="#fff8ee"/><path d="M22 30v14M15 37h14" stroke="#e46a6a" stroke-width="4"/></svg>',
+leaf:'<svg width="54" viewBox="0 0 54 54"><path d="M6 48C10 20 28 6 50 4c-2 24-18 42-44 44z" fill="#bfd8b0"/><path d="M8 46C20 32 32 20 46 8" stroke="#8fb87d" stroke-width="2" fill="none"/></svg>'
+};
+const SPOTS=[['capsule',3,8,-30],['thermo',92,6,25],['heart',8,30,-10],['plaster',88,26,-20],['tablet',4,52,0],['leaf',93,46,10],['bottle',6,72,8],['capsule2',89,66,40],['drop',3,90,0],['cross',94,86,0],['tablet',12,96,0],['leaf',2,18,-60],['heart',95,96,15],['capsule',90,38,70],['drop',97,58,0],['plaster',4,40,60]];
+const decor=$('div',{class:'decor','aria-hidden':'true'});
+SPOTS.forEach(([n,x,y,r])=>{const w=$('div',{html:IC[n]}).firstChild;w.style.cssText=`left:${x}%;top:${y}%;transform:translate(-50%,-50%) rotate(${r}deg)`;decor.append(w);});
+
+document.title=L.title;
+const nav=$('nav',{},...L.sections.map((s,i)=>$('a',{href:'#ex'+(i+1)},`${i+1}. ${s.title}`)));
+document.body.append(decor,$('main',{},
+  $('header',{},$('span',{class:'kicker'},L.kicker),$('h1',{},L.title),$('p',{class:'sub'},L.sub)),
+  nav,...L.sections.map(section),
+  $('footer',{},'© Чемоданчик учителя английского')));
+})();
+</script></body></html>
